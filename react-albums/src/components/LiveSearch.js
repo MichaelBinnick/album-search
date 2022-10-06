@@ -1,4 +1,5 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
+import Axios from "axios";
 
 import SearchBar from "components/SearchBar";
 import Results from "components/Results";
@@ -6,6 +7,14 @@ import Results from "components/Results";
 export default function LiveSearch(props) {
   const [term, setTerm] = useState("");
   const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    Axios.get(`https://itunes.apple.com/search?term=${term}&country=CA&media=music&entity=album&attribute=artistTerm`)
+      .then((res) => {
+        console.log(res.data.results);
+        setResults([...res.data.results]);
+      }, [])
+  })
 
   return (
     <Fragment>
